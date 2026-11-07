@@ -109,4 +109,4 @@ Se puede publicar en Render, Railway o PythonAnywhere. Cuando se haga, aquí se 
 
 ## Estructura del proyecto
 
-Está explicada, archivo por archivo, en [`DISEÑO.md`](DISEÑO), sección 4.
+Está explicada, archivo por archivo, en [`DISEÑO.md`](DISEÑO.md), sección 4.

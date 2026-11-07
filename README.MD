@@ -2,7 +2,7 @@
 
 Aplicación web para guardar y organizar tus hábitos. Cada persona crea su cuenta y ve solo sus hábitos. Hecha con Python y Flask.
 
-> **Estado:** en diseño. Todavía no hay código. Estos pasos se probarán en un equipo distinto al de desarrollo cuando la aplicación esté lista. El diseño completo está en [`DISEÑO.md`](DISEÑO).
+> **Estado:** en diseño. Todavía no hay código. Estos pasos se probarán en un equipo distinto al de desarrollo cuando la aplicación esté lista. El diseño completo está en [`DISEÑO.md`](DISEÑO.md).
 
 ## Qué se necesita
 

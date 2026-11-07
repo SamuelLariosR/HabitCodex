@@ -1,7 +1,7 @@
 
 # HabitCodex – Diseño (versión 0.1)
 
-> **Cómo leer este documento:** todo lo que está antes del título **"FUTURO"** es lo que se construye ahora. Lo que viene después (versión 0.2 en adelante) está aparte, al final, para no confundirse. Cómo instalar y ejecutar la aplicación está en [`README.md`](README).
+> **Cómo leer este documento:** todo lo que está antes del título **"FUTURO"** es lo que se construye ahora. Lo que viene después (versión 0.2 en adelante) está aparte, al final, para no confundirse. Cómo instalar y ejecutar la aplicación está en [`README.md`](README.md).
 
 ## 1. ¿Qué es HabitCodex?
 

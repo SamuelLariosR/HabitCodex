@@ -34,21 +34,24 @@ Una página web para guardar y organizar tus hábitos (por ejemplo "Estudiar", "
 ## 4. Estructura del proyecto 
 
 ```
-habitcodex/
+HabitCodex/
 ├── app.py                 # Punto de arranque: enciende la aplicación
 ├── requirements.txt       # Lista de lo que hay que instalar para ejecutarla
 ├── requirements-dev.txt   # Herramientas extra: pruebas y calidad del código
 ├── .env.example           # Plantilla de la configuración (sin claves reales)
 ├── .gitignore             # Lo que NO se sube a GitHub (.env, venv, base de datos)
+├── .flake8                # Reglas de estilo para flake8
 ├── README.md              # Cómo instalar y ejecutar
 ├── DISEÑO.md              # Este documento
 │
 ├── datos/                 # CAPA DE DATOS (la bodega)
+│   ├── __init__.py        #   Marca la carpeta como paquete de Python
 │   ├── conexion.py        #   Abre SQLite y crea las tablas
 │   ├── usuarios_datos.py  #   Guarda y busca usuarios
 │   └── habitos_datos.py   #   Guarda y busca hábitos
 │
 ├── logica/                # CAPA DE LÓGICA (la cocina)
+│   ├── __init__.py        #   Marca la carpeta como paquete de Python
 │   ├── usuarios.py        #   Reglas de registro e inicio de sesión
 │   ├── habitos.py         #   Reglas de crear, editar, eliminar, buscar, exportar
 │   └── errores.py         #   Los errores propios y sus mensajes
@@ -69,7 +72,11 @@ habitcodex/
 ├── pruebas/               # Pruebas
 │   ├── test_usuarios.py   #   Prueba las reglas de usuarios
 │   ├── test_habitos.py    #   Prueba las reglas de hábitos
-│   └── locustfile.py      #   Prueba de rendimiento (simula muchos usuarios)
+│   ├── locustfile.py      #   Prueba de rendimiento (simula muchos usuarios)
+│   ├── monitor_recursos.py        # Apunta CPU y memoria durante la prueba
+│   └── chequeo_disponibilidad.py  # Comprueba cada minuto que la app responde
+│
+├── resultados/            # CSV de las pruebas de rendimiento y disponibilidad
 │
 └── docs/
     └── HabitCodex_Integrador.xlsx   # El libro de Excel de la entrega
@@ -77,7 +84,7 @@ habitcodex/
 
 El archivo de la base de datos (`habitcodex.db`) se crea solo al ejecutar la aplicación y no se sube a GitHub.
 
-**Dependencias:** `requirements.txt` solo lleva lo necesario para ejecutar (Flask, python-dotenv, y gunicorn en Linux o waitress en Windows). `requirements-dev.txt` lleva pytest, flake8 y locust.
+**Dependencias:** `requirements.txt` solo lleva lo necesario para ejecutar (Flask, python-dotenv, y gunicorn en Linux o waitress en Windows). `requirements-dev.txt` lleva pytest, flake8, locust y psutil.
 
 ## 5. Requerimientos 
 
@@ -88,7 +95,7 @@ El archivo de la base de datos (`habitcodex.db`) se crea solo al ejecutar la apl
 | ----- | ----------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------- |
 | RF-01 | **Crear cuenta** con nombre, correo y contraseña.                                         | Alta      | Con datos buenos se crea; con correo repetido o algo vacío sale un error claro.             |
 | RF-02 | **Entrar y salir** con correo y contraseña.                                               | Alta      | Datos correctos: entra. Incorrectos: no entra. Tras salir, no puede ver sus hábitos.        |
-| RF-03 | **Crear hábito** con un nombre (reglas en la sección 8).                                  | Alta      | Nombre válido: aparece en la lista. Nombre inválido: mensaje de error.                      |
+| RF-03 | **Crear hábito** con un nombre (reglas en la sección 7).                                  | Alta      | Nombre válido: aparece en la lista. Nombre inválido: mensaje de error.                      |
 | RF-04 | **Ver y buscar** mis hábitos (del más antiguo al más nuevo).                              | Alta      | Solo veo los míos; la búsqueda filtra por nombre; sin hábitos dice "Crea tu primer hábito". |
 | RF-05 | **Editar** el nombre de un hábito (mismas reglas que al crear).                           | Media     | El cambio se guarda; un nombre inválido da error.                                           |
 | RF-06 | **Eliminar** un hábito pidiendo confirmación. Se oculta, no se borra de la base de datos. | Media     | Si confirmo, desaparece de la lista; si cancelo, sigue.                                     |
@@ -113,7 +120,7 @@ El archivo de la base de datos (`habitcodex.db`) se crea solo al ejecutar la apl
 |id|Número único|
 |nombre|Nombre de la persona|
 |correo|Único; se guarda en minúsculas|
-|contraseña|Cifrada (hash), nunca el texto real|
+|contrasena|Cifrada (hash), nunca el texto real; el campo se llama así, sin tilde|
 |fecha de creación|Cuándo se registró|
 
 |Hábito||
@@ -130,7 +137,7 @@ El archivo de la base de datos (`habitcodex.db`) se crea solo al ejecutar la apl
 **Nombre de un hábito**
 
 1. No puede estar vacío ni tener solo espacios → _"Debe escribir algo"_.
-2. Máximo 60 caracteres → mensaje de límite.
+2. Máximo 60 caracteres → _"El nombre no puede superar los 60 caracteres"_.
 3. No puede repetir otro hábito activo **de la misma persona**. Da igual mayúsculas y espacios al inicio o al final: `" estudiar "` es lo mismo que `"Estudiar"` → _"Debe escribir un hábito diferente"_.
 4. Al editar, guardar con el mismo nombre que ya tenía **sí** se permite.
 
@@ -139,7 +146,9 @@ El archivo de la base de datos (`habitcodex.db`) se crea solo al ejecutar la apl
 - Eliminar un hábito lo oculta; no se borra de la base de datos.
 - Si un hábito eliminado tenía el nombre "Estudiar", se puede crear otro con ese nombre.
 - Una persona nunca ve ni cambia los hábitos de otra (responde "no encontrado").
-- Toda validación ocurre en el servidor, aunque el navegador también avise.
+- La validación que decide es la de la lógica (servidor). El navegador solo
+  puede usar atributos básicos como `required` y `maxlength`; nunca sustituye
+  la comprobación de la lógica.
 
 ## 8. Pantallas
 
@@ -150,7 +159,7 @@ El archivo de la base de datos (`habitcodex.db`) se crea solo al ejecutar la apl
 
 ## 9. API 
 
-Todas las rutas empiezan con `/api`, usan JSON y, si algo sale mal, responden con un mensaje: `{ "error": "El campo nombre es obligatorio" }`.
+Todas las rutas empiezan con `/api`, usan JSON y, si algo sale mal, responden con un mensaje: `{ "error": "Debe escribir algo" }`.
 
 |Método|Ruta|Para qué sirve|Qué se envía|Req.|
 |---|---|---|---|---|
@@ -184,7 +193,7 @@ Todas las rutas empiezan con `/api`, usan JSON y, si algo sale mal, responden co
 |CP-02|RF-01|Crear cuenta con correo repetido o campo vacío|Error 400 con mensaje|
 |CP-03|RF-02|Entrar con datos correctos|Entra (200)|
 |CP-04|RF-02|Entrar con contraseña incorrecta|Rechaza (401)|
-|CP-05|RNF-02|Pedir la lista de hábitos sin haber iniciado sesión|Rechaza (401)|
+|CP-05|RNF-02|Pedir la lista de hábitos sin haber iniciado sesión|La API rechaza (401); la página web redirige al login|
 |CP-06|RF-03|Con lista vacía, crear "Estudiar"|Aparece en la lista|
 |CP-07|RF-03|Existe "Estudiar"; crear " estudiar "|Error: "Debe escribir un hábito diferente"|
 |CP-08|RF-03|Crear un nombre vacío o solo espacios|Error: "Debe escribir algo"|

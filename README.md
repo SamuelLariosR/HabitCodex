@@ -2,7 +2,7 @@
 
 Aplicación web para guardar y organizar tus hábitos. Cada persona crea su cuenta y ve solo sus hábitos. Hecha con Python y Flask.
 
-> **Estado:** en diseño. Todavía no hay código. Estos pasos se probarán en un equipo distinto al de desarrollo cuando la aplicación esté lista. El diseño completo está en [`DISEÑO.md`](DISEÑO.md).
+> **Estado:** en desarrollo. La estructura y el arranque (Fase 1) ya están listos; las pantallas y la lógica se completan en las fases siguientes. El diseño completo está en [`DISEÑO.md`](DISEÑO.md).
 
 ## Qué se necesita
 
@@ -17,8 +17,8 @@ Abre una terminal y ejecuta uno por uno:
 
 ```bash
 # 1. Descargar el proyecto
-git clone <https://github.com/SamuelLariosR/SamuelLariosR.git>
-cd habitcodex
+git clone https://github.com/SamuelLariosR/HabitCodex.git
+cd HabitCodex
 
 # 2. Crear un entorno virtual
 python -m venv venv
@@ -62,7 +62,7 @@ flask --app app run --debug
 
 Abre `http://127.0.0.1:5000` en el navegador.
 
-**Para uso más profesional :**
+**Para uso más profesional:**
 
 ```bash
 gunicorn -w 4 -b 0.0.0.0:8000 app:app          # Linux

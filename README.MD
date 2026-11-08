@@ -17,7 +17,7 @@ Abre una terminal y ejecuta uno por uno:
 
 ```bash
 # 1. Descargar el proyecto
-git clone <url-del-repositorio>
+git clone <https://github.com/SamuelLariosR/SamuelLariosR.git>
 cd habitcodex
 
 # 2. Crear un entorno virtual

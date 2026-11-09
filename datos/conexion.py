@@ -5,10 +5,7 @@ import sqlite3
 
 
 def obtener_conexion(ruta=None):
-
-    # Se crea y devuelve una conexión a la base de datos SQLite.
-    # Activa las claves foráneas y el modo WAL para mejor rendimiento.
-    
+    """Devuelve una conexión con WAL y claves foráneas activas."""
     # Ruta: argumento (pruebas) o DATABASE_URL; nunca escrita a mano.
     ruta = ruta or os.environ.get("DATABASE_URL", "habitcodex.db")
 
@@ -35,7 +32,7 @@ def obtener_conexion(ruta=None):
 
 
 def inicializar_bd(ruta=None):
-    # Crea las tablas si no existen. No borra datos.
+    """Crea las tablas si no existen; no borra datos."""
     conexion = obtener_conexion(ruta)
     cursor = conexion.cursor()
 

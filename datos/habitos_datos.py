@@ -1,6 +1,6 @@
 # datos/habitos_datos.py
 
-# Esta función guarda un hábito en la base de datos.
+
 def guardar_habito(conexion, usuario, nombre, nombre_normalizado,
                    fecha_creacion):
     """Guarda un hábito activo y devuelve su id."""
@@ -12,7 +12,7 @@ def guardar_habito(conexion, usuario, nombre, nombre_normalizado,
     conexion.commit()
     return cursor.lastrowid
 
-# Esta Función devuelve una lista de hábitos activos de un usuario, ordenados por fecha de creación y id.
+
 def listar_habitos(conexion, usuario):
     """Devuelve los activos, del más antiguo al más nuevo."""
     filas = conexion.execute(
@@ -22,7 +22,7 @@ def listar_habitos(conexion, usuario):
     ).fetchall()
     return [dict(fila) for fila in filas]
 
-# Esta función devuelve un hábito activo del usuario, o None si no existe.
+
 def buscar_habito(conexion, habito_id, usuario):
     """Devuelve un hábito activo del usuario, o None."""
     fila = conexion.execute(
@@ -31,7 +31,7 @@ def buscar_habito(conexion, habito_id, usuario):
     ).fetchone()
     return dict(fila) if fila else None
 
-# Esta función cambia el nombre de un hábito activo. Devuelve True si cambió.
+
 def actualizar_nombre(conexion, habito_id, usuario, nombre,
                       nombre_normalizado):
     """Cambia el nombre de un hábito activo. Devuelve True si cambió."""
@@ -43,7 +43,7 @@ def actualizar_nombre(conexion, habito_id, usuario, nombre,
     conexion.commit()
     return cursor.rowcount > 0
 
-# Esta función oculta un hábito (activo = 0). Devuelve True si lo encontró.
+
 def desactivar_habito(conexion, habito_id, usuario):
     """Oculta un hábito (activo = 0). Devuelve True si lo encontró."""
     cursor = conexion.execute(

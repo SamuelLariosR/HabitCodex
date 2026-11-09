@@ -121,6 +121,7 @@ El archivo de la base de datos (`habitcodex.db`) se crea solo al ejecutar la apl
 |nombre|Nombre de la persona|
 |correo|Único; se guarda en minúsculas|
 |contrasena|Cifrada (hash), nunca el texto real; el campo se llama así, sin tilde|
+|verificado|0 = correo sin verificar; 1 = verificado|
 |fecha de creación|Cuándo se registró|
 
 |Hábito||
@@ -131,6 +132,18 @@ El archivo de la base de datos (`habitcodex.db`) se crea solo al ejecutar la apl
 |nombre normalizado|El mismo nombre sin mayúsculas ni espacios extra; sirve para detectar repetidos|
 |fecha de creación|Cuándo se creó|
 |activo|Sí o no (eliminar lo deja en "no")|
+
+|Token de verificación||
+|---|---|
+|id|Número único|
+|usuario|A quién pertenece el token|
+|valor|Texto único que va en el enlace de verificación|
+|expiracion|Cuándo deja de servir|
+|usado|Sí o no; un token usado no vuelve a servir|
+
+Al registrarse se crea un token y el usuario queda con `verificado = 0`. El envío
+del correo es simulado (no sale de la máquina). Al abrir el enlace, el usuario
+pasa a `verificado = 1` y el token se marca como usado.
 
 ## 7. Reglas
 

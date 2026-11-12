@@ -120,7 +120,7 @@ El archivo de la base de datos (`habitcodex.db`) se crea solo al ejecutar la apl
 |id|Número único|
 |nombre|Nombre de la persona|
 |correo|Único; se guarda en minúsculas|
-|contrasena|Cifrada (hash), nunca el texto real; el campo se llama así, sin tilde|
+|contrasena|Cifrada con `pbkdf2_sha256` y sal aleatoria, nunca el texto real; el campo se llama así, sin tilde|
 |verificado|0 = correo sin verificar; 1 = verificado|
 |fecha de creación|Cuándo se registró|
 
@@ -154,6 +154,20 @@ pasa a `verificado = 1` y el token se marca como usado.
 3. No puede repetir otro hábito activo **de la misma persona**. Da igual mayúsculas y espacios al inicio o al final: `" estudiar "` es lo mismo que `"Estudiar"` → _"Debe escribir un hábito diferente"_.
 4. Al editar, guardar con el mismo nombre que ya tenía **sí** se permite.
 
+**Cuenta y contraseña**
+
+1. Nombre, correo y contraseña no pueden quedar vacíos.
+2. La contraseña debe tener entre 12 y 16 caracteres. No se exigen símbolos,
+   mayúsculas ni números.
+3. El correo se guarda en minúsculas y no se puede repetir.
+4. La contraseña nunca se guarda tal cual: se guarda su **hash**
+   (`pbkdf2_sha256`, con una sal aleatoria de 16 bytes y 600 000 iteraciones,
+   todo con la librería estándar de Python).
+5. Al iniciar sesión se recalcula el hash y se compara con el guardado; el
+   texto de la contraseña no se compara nunca.
+6. El correo sin verificar **no impide** iniciar sesión en la versión 0.1. El
+   token queda guardado y el envío del correo es simulado.
+
 **Otras reglas**
 
 - Eliminar un hábito lo oculta; no se borra de la base de datos.
@@ -162,6 +176,21 @@ pasa a `verificado = 1` y el token se marca como usado.
 - La validación que decide es la de la lógica (servidor). El navegador solo
   puede usar atributos básicos como `required` y `maxlength`; nunca sustituye
   la comprobación de la lógica.
+
+**Mensajes de error**
+
+Texto exacto que ve la persona. No se cambia una letra sin cambiar esta tabla.
+
+|Situación|Mensaje|
+|---|---|
+|Un campo obligatorio vacío (nombre, correo, contraseña o hábito)|"Debe escribir algo"|
+|Hábito repetido entre los activos de la misma persona|"Debe escribir un hábito diferente"|
+|Nombre de hábito de más de 60 caracteres|"El nombre no puede superar los 60 caracteres"|
+|Contraseña de menos de 12 o más de 16 caracteres|"La contraseña debe tener entre 12 y 16 caracteres"|
+|Correo que ya tiene cuenta|"Ese correo ya está registrado"|
+|Correo sin formato válido|"Escriba un correo válido"|
+|Correo o contraseña que no coinciden al entrar|"Correo o contraseña incorrectos"|
+|Hábito que no existe o es de otra persona|"No se encontró el hábito"|
 
 ## 8. Pantallas
 

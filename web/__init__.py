@@ -18,6 +18,7 @@ def create_app():
 
     app = Flask(__name__)
     app.config["SECRET_KEY"] = secret_key
+    # Las rutas pedirán la conexión con esta ruta (Fase 4).
     app.config["DATABASE_PATH"] = os.environ.get(
         "DATABASE_URL", "habitcodex.db"
     )

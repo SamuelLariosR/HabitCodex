@@ -4,7 +4,7 @@
 class ErrorHabito(Exception):
     """Base de errores de habitos; `mensaje` es el texto a mostrar."""
 
-    mensaje = "Ha ocurrido un error con el habito"
+    mensaje = "Ha ocurrido un error con el hábito"
 
 
 class ErrorNombreVacio(ErrorHabito):
@@ -16,8 +16,8 @@ class ErrorNombreLargo(ErrorHabito):
 
 
 class ErrorNombreRepetido(ErrorHabito):
-    mensaje = "Debe escribir un habito diferente"
+    mensaje = "Debe escribir un hábito diferente"
 
 
 class ErrorNoEncontrado(ErrorHabito):
-    mensaje = "No se encontro el habito"
+    mensaje = "No se encontró el hábito"

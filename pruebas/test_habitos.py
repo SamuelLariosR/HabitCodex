@@ -30,7 +30,7 @@ def test_cp07_nombre_repetido(conexion, usuario):
     crear_habito(conexion, usuario, "Estudiar")
     with pytest.raises(ErrorNombreRepetido) as error:
         crear_habito(conexion, usuario, " estudiar ")
-    assert error.value.mensaje == "Debe escribir un habito diferente"
+    assert error.value.mensaje == "Debe escribir un hábito diferente"
 
 
 def test_cp07_repetido_ignora_mayusculas(conexion, usuario):
@@ -141,5 +141,5 @@ def test_mensajes_canonicos():
     assert ErrorNombreLargo.mensaje == (
         "El nombre no puede superar los 60 caracteres"
     )
-    assert ErrorNombreRepetido.mensaje == "Debe escribir un habito diferente"
-    assert ErrorNoEncontrado.mensaje == "No se encontro el habito"
+    assert ErrorNombreRepetido.mensaje == "Debe escribir un hábito diferente"
+    assert ErrorNoEncontrado.mensaje == "No se encontró el hábito"

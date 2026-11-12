@@ -2,9 +2,7 @@
 
 
 class ErrorHabito(Exception):
-    """Base de los errores; `mensaje` es el texto a mostrar."""
-
-    mensaje = "Ha ocurrido un error con el hábito"
+    """Base de los errores; cada hijo declara su propio `mensaje`."""
 
 
 class ErrorCampoVacio(ErrorHabito):

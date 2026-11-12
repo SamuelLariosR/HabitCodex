@@ -74,6 +74,7 @@ HabitCodex/
 ├── pruebas/               # Pruebas
 │   ├── conftest.py        #   Base temporal y datos de ejemplo para cada prueba
 │   ├── test_usuarios.py   #   Prueba las reglas de usuarios
+│   ├── test_errores.py    #   Prueba que cada error trae su mensaje
 │   ├── test_habitos.py    #   Prueba las reglas de hábitos
 │   ├── locustfile.py      #   Prueba de rendimiento (simula muchos usuarios)
 │   ├── monitor_recursos.py        # Apunta CPU y memoria durante la prueba

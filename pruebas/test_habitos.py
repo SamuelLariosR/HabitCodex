@@ -5,7 +5,7 @@ import pytest
 from logica.errores import (
     ErrorNombreLargo,
     ErrorNombreRepetido,
-    ErrorNombreVacio,
+    ErrorCampoVacio,
     ErrorNoEncontrado,
 )
 from logica.habitos import (
@@ -55,12 +55,12 @@ def test_cp07_nombre_liberado_al_eliminar(conexion, usuario):
 
 @pytest.mark.parametrize("nombre", ["", " ", "   ", "\t", "\n"])
 def test_cp08_nombre_vacio(conexion, usuario, nombre):
-    with pytest.raises(ErrorNombreVacio):
+    with pytest.raises(ErrorCampoVacio):
         crear_habito(conexion, usuario, nombre)
 
 
 def test_cp08_nombre_nulo(conexion, usuario):
-    with pytest.raises(ErrorNombreVacio):
+    with pytest.raises(ErrorCampoVacio):
         crear_habito(conexion, usuario, None)
 
 
@@ -137,7 +137,7 @@ def test_validar_nombre_recorta():
 
 
 def test_mensajes_canonicos():
-    assert ErrorNombreVacio.mensaje == "Debe escribir algo"
+    assert ErrorCampoVacio.mensaje == "Debe escribir algo"
     assert ErrorNombreLargo.mensaje == (
         "El nombre no puede superar los 60 caracteres"
     )

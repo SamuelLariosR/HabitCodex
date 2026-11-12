@@ -41,6 +41,7 @@ HabitCodex/
 ├── .env.example           # Plantilla de la configuración (sin claves reales)
 ├── .gitignore             # Lo que NO se sube a GitHub (.env, venv, base de datos)
 ├── .flake8                # Reglas de estilo para flake8
+├── pytest.ini             # Configuración de pytest: carpeta de pruebas e imports
 ├── README.md              # Cómo instalar y ejecutar
 ├── DISEÑO.md              # Este documento
 │
@@ -48,6 +49,7 @@ HabitCodex/
 │   ├── __init__.py        #   Marca la carpeta como paquete de Python
 │   ├── conexion.py        #   Abre SQLite y crea las tablas
 │   ├── usuarios_datos.py  #   Guarda y busca usuarios
+│   ├── tokens_datos.py    #   Guarda y busca los tokens de verificación
 │   └── habitos_datos.py   #   Guarda y busca hábitos
 │
 ├── logica/                # CAPA DE LÓGICA (la cocina)
@@ -70,6 +72,7 @@ HabitCodex/
 │       └── estilos.css    #   Colores y diseño
 │
 ├── pruebas/               # Pruebas
+│   ├── conftest.py        #   Base temporal y datos de ejemplo para cada prueba
 │   ├── test_usuarios.py   #   Prueba las reglas de usuarios
 │   ├── test_habitos.py    #   Prueba las reglas de hábitos
 │   ├── locustfile.py      #   Prueba de rendimiento (simula muchos usuarios)
@@ -138,7 +141,7 @@ El archivo de la base de datos (`habitcodex.db`) se crea solo al ejecutar la apl
 |id|Número único|
 |usuario|A quién pertenece el token|
 |valor|Texto único que va en el enlace de verificación|
-|expiracion|Cuándo deja de servir|
+|expiracion|Cuándo deja de servir; 24 horas después de crearse|
 |usado|Sí o no; un token usado no vuelve a servir|
 
 Al registrarse se crea un token y el usuario queda con `verificado = 0`. El envío
@@ -159,14 +162,16 @@ pasa a `verificado = 1` y el token se marca como usado.
 1. Nombre, correo y contraseña no pueden quedar vacíos.
 2. La contraseña debe tener entre 12 y 16 caracteres. No se exigen símbolos,
    mayúsculas ni números.
-3. El correo se guarda en minúsculas y no se puede repetir.
+3. El correo se guarda en minúsculas, no se puede repetir y debe tener forma
+   `texto@dominio.ext`: una sola arroba y un punto en el dominio.
 4. La contraseña nunca se guarda tal cual: se guarda su **hash**
    (`pbkdf2_sha256`, con una sal aleatoria de 16 bytes y 600 000 iteraciones,
    todo con la librería estándar de Python).
 5. Al iniciar sesión se recalcula el hash y se compara con el guardado; el
    texto de la contraseña no se compara nunca.
 6. El correo sin verificar **no impide** iniciar sesión en la versión 0.1. El
-   token queda guardado y el envío del correo es simulado.
+   token queda guardado y el envío del correo es simulado. El token dura 24
+   horas y solo sirve una vez.
 
 **Otras reglas**
 

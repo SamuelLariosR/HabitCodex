@@ -13,7 +13,7 @@ from datos.habitos_datos import (
 from logica.errores import (
     ErrorNombreLargo,
     ErrorNombreRepetido,
-    ErrorNombreVacio,
+    ErrorCampoVacio,
     ErrorNoEncontrado,
 )
 
@@ -30,7 +30,7 @@ def validar_nombre(nombre):
     texto = nombre if isinstance(nombre, str) else ""
     texto = texto.strip()
     if not texto:
-        raise ErrorNombreVacio()
+        raise ErrorCampoVacio()
     if len(texto) > LARGO_MAXIMO:
         raise ErrorNombreLargo()
     return texto

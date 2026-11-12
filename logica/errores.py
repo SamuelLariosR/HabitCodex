@@ -2,12 +2,12 @@
 
 
 class ErrorHabito(Exception):
-    """Base de errores de habitos; `mensaje` es el texto a mostrar."""
+    """Base de los errores; `mensaje` es el texto a mostrar."""
 
     mensaje = "Ha ocurrido un error con el hábito"
 
 
-class ErrorNombreVacio(ErrorHabito):
+class ErrorCampoVacio(ErrorHabito):
     mensaje = "Debe escribir algo"
 
 
@@ -21,3 +21,19 @@ class ErrorNombreRepetido(ErrorHabito):
 
 class ErrorNoEncontrado(ErrorHabito):
     mensaje = "No se encontró el hábito"
+
+
+class ErrorCorreoRepetido(ErrorHabito):
+    mensaje = "Ese correo ya está registrado"
+
+
+class ErrorCorreoInvalido(ErrorHabito):
+    mensaje = "Escriba un correo válido"
+
+
+class ErrorLongitudContrasena(ErrorHabito):
+    mensaje = "La contraseña debe tener entre 12 y 16 caracteres"
+
+
+class ErrorCredenciales(ErrorHabito):
+    mensaje = "Correo o contraseña incorrectos"

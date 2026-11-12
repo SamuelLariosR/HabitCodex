@@ -26,3 +26,14 @@ def buscar_usuario_por_id(conexion, usuario_id):
         "SELECT * FROM usuarios WHERE id = ?", (usuario_id,)
     ).fetchone()
     return dict(fila) if fila else None
+
+
+def marcar_usuario_verificado(conexion, usuario_id):
+    """Pone verificado = 1. Devuelve True si cambio."""
+    cursor = conexion.execute(
+        "UPDATE usuarios SET verificado = 1 "
+        "WHERE id = ? AND verificado = 0",
+        (usuario_id,),
+    )
+    conexion.commit()
+    return cursor.rowcount > 0

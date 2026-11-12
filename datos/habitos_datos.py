@@ -32,6 +32,16 @@ def buscar_habito(conexion, habito_id, usuario):
     return dict(fila) if fila else None
 
 
+def buscar_por_nombre_normalizado(conexion, usuario, nombre_normalizado):
+    """Devuelve el habito activo con ese nombre normalizado, o None."""
+    fila = conexion.execute(
+        "SELECT * FROM habitos WHERE usuario = ? AND nombre_normalizado = ? "
+        "AND activo = 1",
+        (usuario, nombre_normalizado),
+    ).fetchone()
+    return dict(fila) if fila else None
+
+
 def actualizar_nombre(conexion, habito_id, usuario, nombre,
                       nombre_normalizado):
     """Cambia el nombre de un hábito activo. Devuelve True si cambió."""

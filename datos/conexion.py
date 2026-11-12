@@ -36,6 +36,10 @@ def inicializar_bd(ruta=None):
     conexion = obtener_conexion(ruta)
     cursor = conexion.cursor()
 
+    # Un solo BEGIN: sin el, cada CREATE se confirma aparte y el disco
+    # se sincroniza tres veces.
+    cursor.execute("BEGIN")
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

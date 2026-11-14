@@ -3,26 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fbfbfb">
   <title>{% block titulo %}HabitCodex{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
 </head>
 <body>
   <header class="cabecera">
-    <a class="marca"
-       href="{% if session.get('usuario_id') %}{{ url_for('paginas.principal') }}{% else %}{{ url_for('paginas.login') }}{% endif %}">
-      HabitCodex
-    </a>
-    {% if session.get("usuario_id") %}
-    <div class="sesion">
-      <span>{{ session.get("usuario_nombre") }}</span>
-      <form method="post" action="{{ url_for('paginas.logout') }}">
-        <button type="submit" class="boton-texto">Cerrar sesión</button>
-      </form>
+    <div class="cabecera-interior">
+      <a class="marca"
+         href="{% if session.get('usuario_id') %}{{ url_for('paginas.principal') }}{% else %}{{ url_for('paginas.login') }}{% endif %}">
+        <span class="marca-punto" aria-hidden="true"></span>
+        HabitCodex
+      </a>
+      {% if session.get("usuario_id") %}
+      <div class="sesion">
+        <span class="sesion-nombre">{{ session.get("usuario_nombre") }}</span>
+        <form method="post" action="{{ url_for('paginas.logout') }}">
+          <button type="submit" class="boton-texto">Cerrar sesión</button>
+        </form>
+      </div>
+      {% endif %}
     </div>
-    {% endif %}
   </header>
 
-  <main class="contenido">
+  <main class="contenido {% block clase_contenido %}{% endblock %}">
     {% with mensajes = get_flashed_messages(with_categories=true) %}
       {% if mensajes %}
       <ul class="mensajes">
@@ -35,5 +39,9 @@
 
     {% block contenido %}{% endblock %}
   </main>
+
+  <footer class="pie">
+    <p>HabitCodex · v0.1</p>
+  </footer>
 </body>
 </html>

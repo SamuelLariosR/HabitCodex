@@ -3,16 +3,18 @@
 {% block titulo %}Editar hábito · HabitCodex{% endblock %}
 
 {% block contenido %}
-<h1>Editar hábito</h1>
+<section class="tarjeta-edicion">
+  <h1>Editar hábito</h1>
 
-<form method="post" class="formulario">
-  <label for="nombre">Nombre</label>
-  <input id="nombre" name="nombre" type="text" required maxlength="60"
-         value="{{ habito['nombre'] }}">
-  <button type="submit">Guardar</button>
-</form>
+  <form method="post" class="formulario">
+    <label for="nombre">Nombre</label>
+    <input id="nombre" name="nombre" type="text" required maxlength="60"
+           value="{{ habito['nombre'] }}">
+    <button type="submit">Guardar</button>
+  </form>
 
-<p class="alternativa">
-  <a href="{{ url_for('paginas.principal') }}">Volver a mis hábitos</a>
-</p>
+  <p class="alternativa">
+    <a href="{{ url_for('paginas.principal') }}">Volver a mis hábitos</a>
+  </p>
+</section>
 {% endblock %}

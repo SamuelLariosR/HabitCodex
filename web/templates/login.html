@@ -1,31 +1,44 @@
 {% extends "base.html" %}
 
 {% block titulo %}Iniciar sesión · HabitCodex{% endblock %}
+{% block clase_contenido %}contenido-auth{% endblock %}
 
 {% block contenido %}
-<h1>Iniciar sesión</h1>
+<section class="auth">
+  <aside class="auth-marca">
+    <p class="auth-eyebrow">HabitCodex</p>
+    <p class="auth-titulo">Crea sistemas, no vivas el día a día.</p>
+    <p class="auth-texto">
+      Organiza tus hábitos de estudio y avanza un paso a la vez.
+    </p>
+  </aside>
 
-{% if enlace %}
-<section class="aviso-enlace">
-  <p>Enlace de verificación simulado:</p>
-  <p><a href="{{ enlace }}">{{ enlace }}</a></p>
+  <div class="auth-tarjeta">
+    <h1>Iniciar sesión</h1>
+
+    {% if enlace %}
+    <section class="aviso-enlace">
+      <p>Enlace de verificación simulado:</p>
+      <p><a href="{{ enlace }}">{{ enlace }}</a></p>
+    </section>
+    {% endif %}
+
+    <form method="post" class="formulario">
+      <label for="correo">Correo</label>
+      <input id="correo" name="correo" type="text" required
+             value="{{ correo|default('') }}">
+
+      <label for="contrasena">Contraseña</label>
+      <input id="contrasena" name="contrasena" type="password" required
+             maxlength="16">
+
+      <button type="submit">Entrar</button>
+    </form>
+
+    <p class="alternativa">
+      ¿No tienes cuenta?
+      <a href="{{ url_for('paginas.registro') }}">Crear cuenta</a>
+    </p>
+  </div>
 </section>
-{% endif %}
-
-<form method="post" class="formulario">
-  <label for="correo">Correo</label>
-  <input id="correo" name="correo" type="text" required
-         value="{{ correo|default('') }}">
-
-  <label for="contrasena">Contraseña</label>
-  <input id="contrasena" name="contrasena" type="password" required
-         maxlength="16">
-
-  <button type="submit">Entrar</button>
-</form>
-
-<p class="alternativa">
-  ¿No tienes cuenta?
-  <a href="{{ url_for('paginas.registro') }}">Crear cuenta</a>
-</p>
 {% endblock %}

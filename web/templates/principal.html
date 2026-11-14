@@ -3,11 +3,18 @@
 {% block titulo %}Mis hábitos · HabitCodex{% endblock %}
 
 {% block contenido %}
-<h1>Mis hábitos</h1>
-<p class="saludo">Hola, {{ nombre }}.</p>
+<header class="pagina-cabecera">
+  <div>
+    <h1>Mis hábitos</h1>
+    <p class="saludo">Hola, {{ nombre }}.</p>
+  </div>
+  <span class="contador">
+    {{ habitos|length }} hábito{% if habitos|length != 1 %}s{% endif %}
+  </span>
+</header>
 
 <form method="post" action="{{ url_for('paginas.crear') }}"
-      class="formulario formulario-fila">
+      class="formulario barra-agregar">
   <label class="oculto" for="nombre">Agregar hábito</label>
   <input id="nombre" name="nombre" type="text" required maxlength="60"
          placeholder="Agregar hábito">
@@ -20,7 +27,7 @@
   <li>
     <span class="nombre-habito">{{ habito["nombre"] }}</span>
     <span class="acciones">
-      <a class="boton"
+      <a class="boton boton-secundario"
          href="{{ url_for('paginas.editar', habito_id=habito['id']) }}">
         Editar
       </a>

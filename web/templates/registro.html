@@ -1,29 +1,42 @@
 {% extends "base.html" %}
 
 {% block titulo %}Crear cuenta · HabitCodex{% endblock %}
+{% block clase_contenido %}contenido-auth{% endblock %}
 
 {% block contenido %}
-<h1>Crear cuenta</h1>
+<section class="auth">
+  <aside class="auth-marca">
+    <p class="auth-eyebrow">HabitCodex</p>
+    <p class="auth-titulo">Crea sistemas, no vivas el día a día.</p>
+    <p class="auth-texto">
+      Organiza tus hábitos de estudio y avanza un paso a la vez.
+    </p>
+  </aside>
 
-<form method="post" class="formulario">
-  <label for="nombre">Nombre</label>
-  <input id="nombre" name="nombre" type="text" required maxlength="60"
-         value="{{ nombre|default('') }}">
+  <div class="auth-tarjeta">
+    <h1>Crear cuenta</h1>
 
-  <label for="correo">Correo</label>
-  <input id="correo" name="correo" type="text" required
-         value="{{ correo|default('') }}">
+    <form method="post" class="formulario">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" name="nombre" type="text" required maxlength="60"
+             value="{{ nombre|default('') }}">
 
-  <label for="contrasena">Contraseña</label>
-  <input id="contrasena" name="contrasena" type="password" required
-         maxlength="16">
-  <p class="ayuda">Entre 12 y 16 caracteres.</p>
+      <label for="correo">Correo</label>
+      <input id="correo" name="correo" type="text" required
+             value="{{ correo|default('') }}">
 
-  <button type="submit">Crear cuenta</button>
-</form>
+      <label for="contrasena">Contraseña</label>
+      <input id="contrasena" name="contrasena" type="password" required
+             maxlength="16">
+      <p class="ayuda">Entre 12 y 16 caracteres.</p>
 
-<p class="alternativa">
-  ¿Ya tienes cuenta?
-  <a href="{{ url_for('paginas.login') }}">Entrar</a>
-</p>
+      <button type="submit">Crear cuenta</button>
+    </form>
+
+    <p class="alternativa">
+      ¿Ya tienes cuenta?
+      <a href="{{ url_for('paginas.login') }}">Entrar</a>
+    </p>
+  </div>
+</section>
 {% endblock %}

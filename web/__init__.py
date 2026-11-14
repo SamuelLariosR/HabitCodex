@@ -4,6 +4,9 @@ import os
 from dotenv import load_dotenv
 from flask import Flask
 
+from logica.bd import preparar_bd
+from web.paginas import bp_paginas
+
 
 def create_app():
     """Construye la aplicación con la configuración del archivo .env."""
@@ -18,14 +21,14 @@ def create_app():
 
     app = Flask(__name__)
     app.config["SECRET_KEY"] = secret_key
-    # Las rutas pedirán la conexión con esta ruta (Fase 4).
+    # Las rutas piden la conexión con esta ruta; nunca leen el entorno.
     app.config["DATABASE_PATH"] = os.environ.get(
         "DATABASE_URL", "habitcodex.db"
     )
+    app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
-    # Ruta temporal de la Fase 1; se reemplaza por las páginas en la Fase 5.
-    @app.route("/")
-    def inicio():
-        return "Hola"
+    # Crea las tablas al arrancar; si ya existen, no toca los datos.
+    preparar_bd(app.config["DATABASE_PATH"])
 
+    app.register_blueprint(bp_paginas)
     return app

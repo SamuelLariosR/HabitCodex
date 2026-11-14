@@ -1,1 +1,39 @@
-<!-- Lista y búsqueda de hábitos; se completa en la Fase 5. -->
+{% extends "base.html" %}
+
+{% block titulo %}Mis hábitos · HabitCodex{% endblock %}
+
+{% block contenido %}
+<h1>Mis hábitos</h1>
+<p class="saludo">Hola, {{ nombre }}.</p>
+
+<form method="post" action="{{ url_for('paginas.crear') }}"
+      class="formulario formulario-fila">
+  <label class="oculto" for="nombre">Agregar hábito</label>
+  <input id="nombre" name="nombre" type="text" required maxlength="60"
+         placeholder="Agregar hábito">
+  <button type="submit">Agregar hábito</button>
+</form>
+
+{% if habitos %}
+<ul class="lista-habitos">
+  {% for habito in habitos %}
+  <li>
+    <span class="nombre-habito">{{ habito["nombre"] }}</span>
+    <span class="acciones">
+      <a class="boton"
+         href="{{ url_for('paginas.editar', habito_id=habito['id']) }}">
+        Editar
+      </a>
+      <form method="post"
+            action="{{ url_for('paginas.eliminar', habito_id=habito['id']) }}"
+            onsubmit="return confirm('¿Eliminar este hábito?');">
+        <button type="submit" class="boton boton-peligro">Eliminar</button>
+      </form>
+    </span>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="vacio">Crea tu primer hábito</p>
+{% endif %}
+{% endblock %}

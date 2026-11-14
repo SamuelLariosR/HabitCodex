@@ -56,7 +56,8 @@ HabitCodex/
 │   ├── __init__.py        #   Marca la carpeta como paquete de Python
 │   ├── usuarios.py        #   Reglas de registro e inicio de sesión
 │   ├── habitos.py         #   Reglas de crear, editar, eliminar, buscar, exportar
-│   └── errores.py         #   Los errores propios y sus mensajes
+│   ├── errores.py         #   Los errores propios y sus mensajes
+│   └── bd.py              #   Abre la base y entrega conexiones a la web
 │
 ├── web/                   # CAPA WEB (el mesero)
 │   ├── __init__.py        #   Crea la aplicación Flask y conecta las rutas
@@ -76,6 +77,7 @@ HabitCodex/
 │   ├── test_usuarios.py   #   Prueba las reglas de usuarios
 │   ├── test_errores.py    #   Prueba que cada error trae su mensaje
 │   ├── test_habitos.py    #   Prueba las reglas de hábitos
+│   ├── test_paginas.py    #   Prueba las páginas, la sesión y CP-05/CP-11
 │   ├── locustfile.py      #   Prueba de rendimiento (simula muchos usuarios)
 │   ├── monitor_recursos.py        # Apunta CPU y memoria durante la prueba
 │   └── chequeo_disponibilidad.py  # Comprueba cada minuto que la app responde
@@ -198,12 +200,31 @@ Texto exacto que ve la persona. No se cambia una letra sin cambiar esta tabla.
 |Correo o contraseña que no coinciden al entrar|"Correo o contraseña incorrectos"|
 |Hábito que no existe o es de otra persona|"No se encontró el hábito"|
 
+**Mensajes de éxito y avisos**
+
+Cada acción termina con un mensaje, como pide RNF-07. Estos son los textos
+exactos de las páginas web.
+
+|Situación|Mensaje|
+|---|---|
+|Hábito creado|"Hábito creado"|
+|Hábito editado|"Hábito actualizado"|
+|Hábito eliminado|"Hábito eliminado"|
+|Cuenta creada|"Cuenta creada. Revisa el enlace de verificación"|
+|Correo verificado|"Correo verificado"|
+|Enlace inválido o caducado|"El enlace de verificación no sirve o ya caducó"|
+|Sesión cerrada|"Sesión cerrada"|
+|Entrada correcta|"Bienvenido, Ana" (con el nombre de la persona)|
+|Página privada sin sesión|"Debe iniciar sesión para ver esa página"|
+
 ## 8. Pantallas
 
 - **Registro:** nombre, correo, contraseña y botón "Crear cuenta".
 - **Inicio de sesión:** correo, contraseña y botón "Entrar".
 - **Principal:** mensajes de resultado, formulario "Agregar hábito", campo de búsqueda, lista con botones "Editar" y "Eliminar", botón "Exportar CSV" y botón "Cerrar sesión". Sin hábitos: "Crea tu primer hábito".
 - **Editar:** el nombre actual y un botón "Guardar".
+- **Verificación:** el enlace del correo simulado marca la cuenta como
+  verificada y vuelve al inicio de sesión.
 
 ## 9. API 
 

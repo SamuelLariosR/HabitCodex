@@ -1,1 +1,252 @@
-/* Colores y diseño; se completa en la Fase 5. */
+/* Estilos propios de HabitCodex; sin frameworks ni fuentes externas. */
+
+:root {
+  --fondo: #f4f1ea;
+  --tarjeta: #ffffff;
+  --texto: #26302b;
+  --suave: #6b7a72;
+  --borde: #dbe2dc;
+  --verde: #2f6b4f;
+  --verde-oscuro: #245540;
+  --rojo: #a33b3b;
+  --rojo-fondo: #fbeaea;
+  --verde-fondo: #e8f4ec;
+  --aviso-fondo: #f4efdf;
+  --aviso-texto: #6b5a22;
+  --radio: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: var(--verde);
+  color: #ffffff;
+}
+
+.marca {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-decoration: none;
+}
+
+.sesion {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.contenido {
+  width: min(100% - 2rem, 720px);
+  margin: 2rem auto 3rem;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 1.6rem;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.formulario label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.formulario input {
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.formulario input:focus {
+  outline: 2px solid var(--verde);
+  outline-offset: 1px;
+}
+
+.formulario-fila {
+  flex-direction: row;
+  align-items: center;
+}
+
+.formulario-fila input {
+  flex: 1;
+}
+
+button,
+.boton {
+  display: inline-block;
+  padding: 0.55rem 0.95rem;
+  border: 0;
+  border-radius: 8px;
+  background: var(--verde);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button:hover,
+.boton:hover {
+  background: var(--verde-oscuro);
+}
+
+.boton-peligro {
+  background: var(--rojo);
+}
+
+.boton-peligro:hover {
+  background: #832f2f;
+}
+
+.boton-texto {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 0.35rem 0.7rem;
+}
+
+.boton-texto:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.mensajes {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.mensaje {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+}
+
+.mensaje-error {
+  background: var(--rojo-fondo);
+  border-color: #e7bcbc;
+  color: var(--rojo);
+}
+
+.mensaje-exito {
+  background: var(--verde-fondo);
+  border-color: #bfdcc9;
+  color: var(--verde-oscuro);
+}
+
+.mensaje-aviso {
+  background: var(--aviso-fondo);
+  border-color: #ded2a8;
+  color: var(--aviso-texto);
+}
+
+.lista-habitos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.lista-habitos li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 0.75rem 1rem;
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.acciones form {
+  margin: 0;
+}
+
+.nombre-habito {
+  overflow-wrap: anywhere;
+}
+
+.vacio,
+.alternativa,
+.ayuda,
+.saludo {
+  color: var(--suave);
+}
+
+.vacio {
+  background: var(--tarjeta);
+  border: 1px dashed var(--borde);
+  border-radius: var(--radio);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.aviso-enlace {
+  background: var(--aviso-fondo);
+  border: 1px solid #ded2a8;
+  border-radius: var(--radio);
+  padding: 0.9rem 1rem;
+  margin-bottom: 1.25rem;
+  overflow-wrap: anywhere;
+}
+
+.aviso-enlace a {
+  color: var(--verde-oscuro);
+}
+
+.oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .formulario-fila {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lista-habitos li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

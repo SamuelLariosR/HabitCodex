@@ -1,1 +1,18 @@
-<!-- Formulario para editar un hábito; se completa en la Fase 5. -->
+{% extends "base.html" %}
+
+{% block titulo %}Editar hábito · HabitCodex{% endblock %}
+
+{% block contenido %}
+<h1>Editar hábito</h1>
+
+<form method="post" class="formulario">
+  <label for="nombre">Nombre</label>
+  <input id="nombre" name="nombre" type="text" required maxlength="60"
+         value="{{ habito['nombre'] }}">
+  <button type="submit">Guardar</button>
+</form>
+
+<p class="alternativa">
+  <a href="{{ url_for('paginas.principal') }}">Volver a mis hábitos</a>
+</p>
+{% endblock %}

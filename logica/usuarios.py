@@ -136,8 +136,11 @@ def registrar_usuario(conexion, nombre, correo, contrasena):
 
 
 def autenticar_usuario(conexion, correo, contrasena):
-    """Devuelve el usuario si todo coincide, o lanza ErrorCredenciales."""
-    usuario = buscar_usuario_por_correo(conexion, normalizar_correo(correo))
+    """Devuelve el usuario si todo coincide, o lanza el error adecuado."""
+    correo = normalizar_correo(correo)
+    if not correo or not isinstance(contrasena, str) or not contrasena:
+        raise ErrorCampoVacio()
+    usuario = buscar_usuario_por_correo(conexion, correo)
     if usuario is None:
         raise ErrorCredenciales()
     if not verificar_contrasena(contrasena, usuario["contrasena"]):

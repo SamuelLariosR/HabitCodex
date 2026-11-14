@@ -110,6 +110,7 @@ def login():
                 "login.html", correo=correo, enlace=enlace
             )
 
+        session.clear()
         session["usuario_id"] = usuario["id"]
         session["usuario_nombre"] = usuario["nombre"]
         flash(f"Bienvenido, {usuario['nombre']}", "exito")

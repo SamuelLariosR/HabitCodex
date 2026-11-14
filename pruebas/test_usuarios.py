@@ -135,6 +135,21 @@ def test_cp03_entrar_sin_verificar_correo(conexion):
     assert usuario["verificado"] == 0
 
 
+@pytest.mark.parametrize(
+    "correo, contrasena",
+    [
+        ("", CONTRASENA),
+        ("   ", CONTRASENA),
+        ("ana@x.com", ""),
+        ("ana@x.com", None),
+    ],
+)
+def test_cp03_entrar_con_campo_vacio(conexion, correo, contrasena):
+    with pytest.raises(ErrorCampoVacio) as error:
+        autenticar_usuario(conexion, correo, contrasena)
+    assert error.value.mensaje == "Debe escribir algo"
+
+
 def test_cp04_contrasena_incorrecta(conexion):
     registrar_usuario(conexion, "Ana", "ana@x.com", CONTRASENA)
     with pytest.raises(ErrorCredenciales):

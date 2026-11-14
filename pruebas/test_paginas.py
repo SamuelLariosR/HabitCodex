@@ -163,6 +163,23 @@ def test_login_con_contrasena_incorrecta(app, cliente):
     assert "Mis hábitos" not in html
 
 
+def test_login_con_campos_vacios_muestra_el_mensaje(app, cliente):
+    html = _texto(
+        cliente.post(
+            "/login",
+            data={"correo": "", "contrasena": ""},
+            follow_redirects=True,
+        )
+    )
+    assert "Debe escribir algo" in html
+    assert "Correo o contraseña incorrectos" not in html
+
+
+def test_las_paginas_no_se_guardan_en_cache(cliente):
+    respuesta = cliente.get("/login")
+    assert respuesta.headers["Cache-Control"] == "no-store"
+
+
 def test_crear_habito_aparece_en_la_lista(app, cliente):
     _crear_usuario(app, "Ana", "ana@x.com")
     _entrar(cliente, "ana@x.com")

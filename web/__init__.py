@@ -30,5 +30,12 @@ def create_app():
     # Crea las tablas al arrancar; si ya existen, no toca los datos.
     preparar_bd(app.config["DATABASE_PATH"])
 
+    @app.after_request
+    def sin_cache(respuesta):
+        """Evita mostrar páginas privadas desde la caché tras salir."""
+        if respuesta.mimetype == "text/html":
+            respuesta.headers["Cache-Control"] = "no-store"
+        return respuesta
+
     app.register_blueprint(bp_paginas)
     return app

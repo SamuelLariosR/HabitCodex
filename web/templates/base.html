@@ -8,7 +8,10 @@
 </head>
 <body>
   <header class="cabecera">
-    <a class="marca" href="{{ url_for('paginas.principal') }}">HabitCodex</a>
+    <a class="marca"
+       href="{% if session.get('usuario_id') %}{{ url_for('paginas.principal') }}{% else %}{{ url_for('paginas.login') }}{% endif %}">
+      HabitCodex
+    </a>
     {% if session.get("usuario_id") %}
     <div class="sesion">
       <span>{{ session.get("usuario_nombre") }}</span>

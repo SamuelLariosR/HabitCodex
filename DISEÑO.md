@@ -78,6 +78,7 @@ HabitCodex/
 │   ├── test_errores.py    #   Prueba que cada error trae su mensaje
 │   ├── test_habitos.py    #   Prueba las reglas de hábitos
 │   ├── test_paginas.py    #   Prueba las páginas, la sesión y CP-05/CP-11
+│   ├── test_api.py        #   Prueba los endpoints JSON y CP-17
 │   ├── locustfile.py      #   Prueba de rendimiento (simula muchos usuarios)
 │   ├── monitor_recursos.py        # Apunta CPU y memoria durante la prueba
 │   └── chequeo_disponibilidad.py  # Comprueba cada minuto que la app responde
@@ -199,6 +200,8 @@ Texto exacto que ve la persona. No se cambia una letra sin cambiar esta tabla.
 |Correo sin formato válido|"Escriba un correo válido"|
 |Correo o contraseña que no coinciden al entrar|"Correo o contraseña incorrectos"|
 |Hábito que no existe o es de otra persona|"No se encontró el hábito"|
+|Datos que no son un objeto JSON válido|"Los datos enviados no son válidos"|
+|Fallo interno del servidor|"Ha ocurrido un error en el servidor"|
 
 **Mensajes de éxito y avisos**
 

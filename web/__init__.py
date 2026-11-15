@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from flask import Flask
 
 from logica.bd import preparar_bd
+from web.api import bp_api
 from web.paginas import bp_paginas
 
 
@@ -38,4 +39,5 @@ def create_app():
         return respuesta
 
     app.register_blueprint(bp_paginas)
+    app.register_blueprint(bp_api)
     return app

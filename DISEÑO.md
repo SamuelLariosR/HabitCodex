@@ -228,7 +228,9 @@ exactos de las páginas web.
 - **Principal:** mensajes de resultado, formulario "Agregar hábito", campo de búsqueda, lista con botones "Editar" y "Eliminar", botón "Exportar CSV" y botón "Cerrar sesión". Sin hábitos: "Crea tu primer hábito".
 - **Editar:** el nombre actual y un botón "Guardar".
 - **Verificación:** el enlace del correo simulado marca la cuenta como
-  verificada y vuelve al inicio de sesión.
+  verificada y vuelve al inicio de sesión. Se enseña una sola vez, justo
+  después del registro, y dura 24 horas; sin verificar, la cuenta funciona
+  igual.
 
 ## 9. API 
 
@@ -337,3 +339,4 @@ Con **Locust** se simulan personas usando la aplicación (cada una inicia sesió
 - Cambiar el aspecto con React (la API ya existe desde la v0.1, así que la parte visual se podría reemplazar sin tocar las reglas).
 - Estadísticas y recordatorios.
 - Recuperación de contraseña.
+- Reenviar el enlace de verificación: hoy se enseña una sola vez al registrarse y caduca a las 24 horas; si se pierde, la cuenta sigue funcionando sin verificar porque la v0.1 no lo bloquea.

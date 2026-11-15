@@ -23,6 +23,7 @@ Una página web para guardar y organizar tus hábitos (por ejemplo "Estudiar", "
 | **Usuarios a la vez** | Cuántas personas usan la aplicación en el mismo momento.                                                                             |
 | **Percentil 95**      | "El 95 % de las veces fue igual o más rápido que este tiempo".                                                                       |
 | **Gunicorn / Locust** | Gunicorn: servidor para ejecutar la app de forma más seria. Locust: programa que simula muchos usuarios para medir la rapidez.       |
+| **Thunder Client**    | Extensión de VS Code para probar la API: se le manda una petición y se ve la respuesta. Solo se usa para comprobar, no es parte de la app. |
 
 ## 3. ¿Qué hace la versión 0.1?
 
@@ -256,6 +257,18 @@ Todas las rutas empiezan con `/api`, usan JSON y, si algo sale mal, responden co
 |500|Falló algo dentro del servidor|
 
 **Ejemplo:** enviar `POST /api/habits` con `{ "nombre": "Estudiar" }` responde `201` y `{ "id": 1, "nombre": "Estudiar" }`. Si el nombre viene vacío responde `400` y `{ "error": "Debe escribir algo" }`.
+
+**Cómo comprobarla con Thunder Client**
+
+Para revisar los endpoints sin pasar por las pantallas conviene una herramienta de peticiones HTTP: **Thunder Client** (extensión gratuita de VS Code), Postman, Insomnia o `curl`. Es solo para desarrollo: la aplicación no la necesita para funcionar y no se agrega a `requirements.txt`.
+
+1. Arranca la app con `flask --app app run --debug`; queda en `http://127.0.0.1:5000`.
+2. Envía `POST http://127.0.0.1:5000/api/register` con el cuerpo en JSON `{ "nombre": "Ana", "correo": "ana@x.com", "contrasena": "mi-clave-larga" }`. Debe responder `201`.
+3. Envía `POST /api/login` con ese correo y esa contraseña. Responde `200` y guarda la cookie de sesión; desde ahí las demás peticiones van autenticadas.
+4. Con sesión: `GET /api/habits` (`200` con la lista), `POST /api/habits` (`201`), `PUT` y `DELETE /api/habits/{id}` (`200`), y `GET /api/habits/export` (descarga `habitos.csv`).
+5. Envía `POST /api/logout` y repite `GET /api/habits`: debe responder `401` con `{ "error": "Debe iniciar sesión para ver esa página" }`.
+
+La sesión viaja en una cookie: si la herramienta no la conserva sola, hay que activar el manejo de cookies o copiar la de la respuesta del login.
 
 ## 10. Pruebas de funcionamiento
 

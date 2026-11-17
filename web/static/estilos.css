@@ -1,28 +1,33 @@
 /* Estilos propios de HabitCodex; sin frameworks ni fuentes externas. */
 
 :root {
-  --fondo: #fbfbfb;
-  --superficie: #ffffff;
-  --texto: #191919;
-  --suave: #5b6470;
-  --tenue: #6b7280;
-  --borde: #e5e7eb;
-  --borde-fuerte: #d1d5db;
-  --primario: #0070f4;
-  --primario-oscuro: #0059c7;
+  color-scheme: dark;
+  --fondo: #000000;
+  --superficie: #0e0e11;
+  --superficie-alta: #16161a;
+  --texto: #f5f5f7;
+  --suave: #a1a1aa;
+  --tenue: #8b8b94;
+  --borde: #26262b;
+  --borde-fuerte: #3a3a42;
+  --primario: #1f6feb;
+  --primario-oscuro: #1858c4;
+  --enlace: #58a6ff;
+  --enlace-hover: #8cc4ff;
   --acento: #8d46e7;
-  --peligro: #dc2626;
-  --exito: #065f46;
-  --exito-fondo: #ecfdf5;
-  --error-fondo: #fef2f2;
-  --aviso-fondo: #fffbeb;
-  --aviso-texto: #92400e;
+  --peligro: #f87171;
+  --peligro-fuerte: #dc2626;
+  --exito: #6ee7b7;
+  --exito-fondo: rgba(16, 185, 129, 0.12);
+  --error-fondo: rgba(239, 68, 68, 0.12);
+  --aviso-fondo: rgba(245, 158, 11, 0.12);
+  --aviso-texto: #fcd34d;
   --radio: 14px;
   --radio-grande: 22px;
-  --sombra: 0 1px 2px rgba(25, 25, 25, 0.05),
-    0 8px 24px rgba(25, 25, 25, 0.05);
-  --sombra-alta: 0 2px 4px rgba(25, 25, 25, 0.06),
-    0 24px 48px rgba(25, 25, 25, 0.1);
+  --sombra: 0 1px 2px rgba(0, 0, 0, 0.45),
+    0 8px 24px rgba(0, 0, 0, 0.35);
+  --sombra-alta: 0 2px 4px rgba(0, 0, 0, 0.55),
+    0 24px 48px rgba(0, 0, 0, 0.45);
   --ancho: 1040px;
   --fuente: "Inter", "Segoe UI", system-ui, -apple-system, "Noto Sans",
     sans-serif;
@@ -45,9 +50,9 @@ body {
   flex-direction: column;
   background:
     radial-gradient(900px 480px at 12% -10%,
-      rgba(0, 112, 244, 0.1), transparent 60%),
+      rgba(31, 111, 235, 0.18), transparent 60%),
     radial-gradient(760px 460px at 100% 0%,
-      rgba(141, 70, 231, 0.08), transparent 55%),
+      rgba(141, 70, 231, 0.14), transparent 55%),
     var(--fondo);
   color: var(--texto);
   font-family: var(--fuente);
@@ -56,17 +61,17 @@ body {
 }
 
 ::selection {
-  background: rgba(0, 112, 244, 0.2);
+  background: rgba(88, 166, 255, 0.35);
 }
 
 a {
-  color: var(--primario);
+  color: var(--enlace);
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
 
 a:hover {
-  color: var(--primario-oscuro);
+  color: var(--enlace-hover);
 }
 
 h1 {
@@ -83,7 +88,7 @@ h1 {
   top: 0;
   z-index: 20;
   border-bottom: 1px solid var(--borde);
-  background: rgba(251, 251, 251, 0.82);
+  background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(14px);
 }
 
@@ -117,7 +122,7 @@ h1 {
   height: 12px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--primario), var(--acento));
-  box-shadow: 0 0 0 4px rgba(0, 112, 244, 0.12);
+  box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.18);
 }
 
 .sesion {
@@ -171,19 +176,19 @@ h1 {
 
 .mensaje-error {
   background: var(--error-fondo);
-  border-color: #fecaca;
-  color: #991b1b;
+  border-color: rgba(248, 113, 113, 0.35);
+  color: #fca5a5;
 }
 
 .mensaje-exito {
   background: var(--exito-fondo);
-  border-color: #a7f3d0;
+  border-color: rgba(52, 211, 153, 0.35);
   color: var(--exito);
 }
 
 .mensaje-aviso {
   background: var(--aviso-fondo);
-  border-color: #fde68a;
+  border-color: rgba(251, 191, 36, 0.35);
   color: var(--aviso-texto);
 }
 
@@ -210,8 +215,8 @@ h1 {
   color: #ffffff;
   background:
     radial-gradient(620px 320px at 8% 0%,
-      rgba(255, 255, 255, 0.22), transparent 55%),
-    linear-gradient(140deg, var(--primario), var(--acento));
+      rgba(255, 255, 255, 0.12), transparent 55%),
+    linear-gradient(140deg, var(--primario-oscuro), var(--acento));
 }
 
 .auth-marca::before,
@@ -296,7 +301,7 @@ h1 {
   padding: 0.8rem 0.9rem;
   border: 1px solid var(--borde-fuerte);
   border-radius: 10px;
-  background: var(--superficie);
+  background: var(--superficie-alta);
   color: var(--texto);
   font: inherit;
   transition:
@@ -312,7 +317,15 @@ h1 {
 .formulario input:focus {
   outline: none;
   border-color: var(--primario);
-  box-shadow: 0 0 0 3px rgba(0, 112, 244, 0.16);
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.22);
+}
+
+.formulario input:autofill,
+.formulario input:-webkit-autofill {
+  -webkit-text-fill-color: var(--texto);
+  -webkit-box-shadow: 0 0 0 1000px var(--superficie-alta) inset;
+  color: var(--texto);
+  caret-color: var(--texto);
 }
 
 .formulario button[type="submit"] {
@@ -370,31 +383,31 @@ button:active,
 button:focus-visible,
 .boton:focus-visible,
 a:focus-visible {
-  outline: 3px solid rgba(0, 112, 244, 0.45);
+  outline: 3px solid rgba(88, 166, 255, 0.55);
   outline-offset: 3px;
 }
 
 .boton-secundario {
-  background: var(--superficie);
+  background: var(--superficie-alta);
   border-color: var(--borde-fuerte);
   color: var(--texto);
 }
 
 .boton-secundario:hover {
-  background: #f3f4f6;
-  border-color: #9ca3af;
+  background: #222229;
+  border-color: #52525b;
   color: var(--texto);
 }
 
 .boton-peligro {
-  background: #fff1f2;
-  border-color: #fecdd3;
+  background: rgba(248, 113, 113, 0.12);
+  border-color: rgba(248, 113, 113, 0.35);
   color: var(--peligro);
 }
 
 .boton-peligro:hover {
-  background: var(--peligro);
-  border-color: var(--peligro);
+  background: var(--peligro-fuerte);
+  border-color: var(--peligro-fuerte);
   color: #ffffff;
 }
 
@@ -407,7 +420,7 @@ a:focus-visible {
 }
 
 .boton-texto:hover {
-  background: #f3f4f6;
+  background: var(--superficie-alta);
   color: var(--texto);
 }
 
@@ -453,13 +466,13 @@ a:focus-visible {
 
 .barra-agregar input {
   flex: 1;
-  border-color: transparent;
-  background: #f7f8f9;
+  border-color: var(--borde);
+  background: #0a0a0d;
 }
 
 .barra-agregar input:focus {
   border-color: var(--primario);
-  background: var(--superficie);
+  background: var(--superficie-alta);
 }
 
 .barra-agregar button[type="submit"] {
@@ -489,7 +502,7 @@ a:focus-visible {
   padding: 0.7rem 0.9rem;
   border: 1px solid var(--borde-fuerte);
   border-radius: 10px;
-  background: var(--superficie);
+  background: var(--superficie-alta);
   color: var(--texto);
   font: inherit;
   transition:
@@ -504,7 +517,7 @@ a:focus-visible {
 .barra-buscar input:focus {
   outline: none;
   border-color: var(--primario);
-  box-shadow: 0 0 0 3px rgba(0, 112, 244, 0.16);
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.22);
 }
 
 .barra-buscar .boton,
@@ -530,7 +543,7 @@ a:focus-visible {
   border: 1px solid var(--borde);
   border-radius: var(--radio);
   background: var(--superficie);
-  box-shadow: 0 1px 2px rgba(25, 25, 25, 0.04);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   transition:
     border-color 0.18s ease,
     box-shadow 0.18s ease,
@@ -538,8 +551,8 @@ a:focus-visible {
 }
 
 .lista-habitos li:hover {
-  border-color: #c7d2fe;
-  box-shadow: var(--sombra);
+  border-color: #2f4f7f;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
   transform: translateY(-1px);
 }
 
@@ -580,12 +593,12 @@ a:focus-visible {
   width: 44px;
   height: 44px;
   margin: 0 auto 1rem;
-  border: 1px dashed rgba(0, 112, 244, 0.45);
+  border: 1px dashed rgba(88, 166, 255, 0.45);
   border-radius: 50%;
   background: linear-gradient(
     135deg,
-    rgba(0, 112, 244, 0.14),
-    rgba(141, 70, 231, 0.14)
+    rgba(88, 166, 255, 0.22),
+    rgba(141, 70, 231, 0.22)
   );
 }
 
@@ -612,10 +625,10 @@ a:focus-visible {
 .aviso-enlace {
   margin: 0 0 1.5rem;
   padding: 0.9rem 1rem;
-  border: 1px solid #ddd6fe;
+  border: 1px solid rgba(167, 139, 250, 0.35);
   border-radius: 12px;
-  background: #f5f3ff;
-  color: #4c1d95;
+  background: rgba(139, 92, 246, 0.12);
+  color: #ddd6fe;
   font-size: 0.9rem;
   overflow-wrap: anywhere;
 }
@@ -629,7 +642,7 @@ a:focus-visible {
 }
 
 .aviso-enlace a {
-  color: #6d28d9;
+  color: #c4b5fd;
 }
 
 /* Pie ----------------------------------------------------------------- */

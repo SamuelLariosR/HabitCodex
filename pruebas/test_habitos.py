@@ -9,6 +9,7 @@ from logica.errores import (
     ErrorNoEncontrado,
 )
 from logica.habitos import (
+    buscar_mis_habitos,
     crear_habito,
     editar_habito,
     eliminar_habito,
@@ -143,3 +144,66 @@ def test_mensajes_canonicos():
     )
     assert ErrorNombreRepetido.mensaje == "Debe escribir un hábito diferente"
     assert ErrorNoEncontrado.mensaje == "No se encontró el hábito"
+
+
+def _nombres(conexion, usuario, texto):
+    return [
+        habito["nombre"]
+        for habito in buscar_mis_habitos(conexion, usuario, texto)
+    ]
+
+
+def test_cp10_buscar_devuelve_solo_los_que_coinciden(conexion, usuario):
+    crear_habito(conexion, usuario, "Estudiar")
+    crear_habito(conexion, usuario, "Leer")
+    assert _nombres(conexion, usuario, "est") == ["Estudiar"]
+
+
+def test_cp10_buscar_ignora_mayusculas_y_espacios(conexion, usuario):
+    crear_habito(conexion, usuario, "Estudiar")
+    crear_habito(conexion, usuario, "Leer")
+    assert _nombres(conexion, usuario, "  ESTUDIAR  ") == ["Estudiar"]
+
+
+def test_cp10_buscar_sin_coincidencias(conexion, usuario):
+    crear_habito(conexion, usuario, "Estudiar")
+    assert _nombres(conexion, usuario, "correr") == []
+
+
+def test_cp10_buscar_vacio_devuelve_todos(conexion, usuario):
+    crear_habito(conexion, usuario, "Estudiar")
+    crear_habito(conexion, usuario, "Leer")
+    for texto in ("", "   ", None):
+        assert _nombres(conexion, usuario, texto) == ["Estudiar", "Leer"]
+
+
+def test_cp10_buscar_no_mezcla_habitos_ajenos(
+    conexion, usuario, otro_usuario
+):
+    crear_habito(conexion, usuario, "Estudiar")
+    crear_habito(conexion, otro_usuario, "Estudiar piano")
+    assert _nombres(conexion, otro_usuario, "est") == ["Estudiar piano"]
+    assert _nombres(conexion, usuario, "est") == ["Estudiar"]
+
+
+def test_cp10_buscar_no_devuelve_eliminados(conexion, usuario):
+    habito_id = crear_habito(conexion, usuario, "Estudiar")
+    eliminar_habito(conexion, habito_id, usuario)
+    assert _nombres(conexion, usuario, "est") == []
+
+
+def test_cp10_buscar_toma_los_comodines_como_texto(conexion, usuario):
+    crear_habito(conexion, usuario, "Beber 100% agua")
+    crear_habito(conexion, usuario, "Leer")
+    assert _nombres(conexion, usuario, "%") == ["Beber 100% agua"]
+    assert _nombres(conexion, usuario, "_") == []
+    assert _nombres(conexion, usuario, "100%") == ["Beber 100% agua"]
+
+
+def test_cp10_buscar_conserva_el_orden(conexion, usuario):
+    crear_habito(conexion, usuario, "Estudiar")
+    crear_habito(conexion, usuario, "Estudiar piano")
+    assert _nombres(conexion, usuario, "estudiar") == [
+        "Estudiar",
+        "Estudiar piano",
+    ]

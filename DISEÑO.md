@@ -220,6 +220,7 @@ exactos de las páginas web.
 |Sesión cerrada|"Sesión cerrada"|
 |Entrada correcta|"Bienvenido, Ana" (con el nombre de la persona)|
 |Página privada sin sesión|"Debe iniciar sesión para ver esa página"|
+|La búsqueda no encuentra hábitos|"No hay hábitos que coincidan con la búsqueda"|
 
 ## 8. Pantallas
 

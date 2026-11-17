@@ -6,6 +6,7 @@ from datos.habitos_datos import (
     actualizar_nombre,
     buscar_habito,
     buscar_por_nombre_normalizado,
+    buscar_por_texto,
     desactivar_habito,
     guardar_habito,
     listar_habitos,
@@ -39,6 +40,17 @@ def validar_nombre(nombre):
 def listar_mis_habitos(conexion, usuario):
     """Habitos activos del usuario, del mas antiguo al mas nuevo."""
     return listar_habitos(conexion, usuario)
+
+
+def buscar_mis_habitos(conexion, usuario, texto):
+    """Activos cuyo nombre contiene el texto. Sin texto, devuelve todos.
+
+    Se busca sobre el nombre normalizado, asi que no importan mayusculas
+    ni espacios en los extremos.
+    """
+    if not isinstance(texto, str) or not texto.strip():
+        return listar_habitos(conexion, usuario)
+    return buscar_por_texto(conexion, usuario, normalizar_nombre(texto))
 
 
 def obtener_habito(conexion, habito_id, usuario):

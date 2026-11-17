@@ -16,10 +16,10 @@ from flask import (
 from logica.bd import conexion_bd
 from logica.errores import ErrorHabito
 from logica.habitos import (
+    buscar_mis_habitos,
     crear_habito,
     editar_habito,
     eliminar_habito,
-    listar_mis_habitos,
     obtener_habito,
 )
 from logica.usuarios import (
@@ -52,11 +52,15 @@ def requiere_sesion(vista):
 @bp_paginas.get("/")
 @requiere_sesion
 def principal():
+    busqueda = request.args.get("q", "").strip()
     with conexion_bd(_ruta_bd()) as conexion:
-        habitos = listar_mis_habitos(conexion, session["usuario_id"])
+        habitos = buscar_mis_habitos(
+            conexion, session["usuario_id"], busqueda
+        )
     return render_template(
         "principal.html",
         habitos=habitos,
+        busqueda=busqueda,
         nombre=session.get("usuario_nombre", ""),
     )
 

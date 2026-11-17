@@ -467,6 +467,52 @@ a:focus-visible {
   white-space: nowrap;
 }
 
+.barra-herramientas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.barra-buscar {
+  display: flex;
+  flex: 1 1 260px;
+  align-items: stretch;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.barra-buscar input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--borde-fuerte);
+  border-radius: 10px;
+  background: var(--superficie);
+  color: var(--texto);
+  font: inherit;
+  transition:
+    border-color 0.16s ease,
+    box-shadow 0.16s ease;
+}
+
+.barra-buscar input::placeholder {
+  color: var(--tenue);
+}
+
+.barra-buscar input:focus {
+  outline: none;
+  border-color: var(--primario);
+  box-shadow: 0 0 0 3px rgba(0, 112, 244, 0.16);
+}
+
+.barra-buscar .boton,
+.barra-herramientas > .boton {
+  margin: 0;
+  white-space: nowrap;
+}
+
 .lista-habitos {
   list-style: none;
   margin: 0;
@@ -659,6 +705,19 @@ a:focus-visible {
 
   .barra-agregar button {
     width: 100%;
+  }
+
+  .barra-herramientas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .barra-buscar {
+    flex-wrap: wrap;
+  }
+
+  .barra-buscar input {
+    flex: 1 1 100%;
   }
 
   .lista-habitos li {

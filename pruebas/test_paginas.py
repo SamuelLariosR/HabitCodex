@@ -309,3 +309,70 @@ def test_cerrar_sesion_vuelve_al_login(app, cliente):
     respuesta = cliente.get("/")
     assert respuesta.status_code == 302
     assert respuesta.headers["Location"].endswith("/login")
+
+
+def test_cp10_buscar_filtra_la_lista(app, cliente):
+    ana = _crear_usuario(app, "Ana", "ana@x.com")
+    _crear_habito(app, ana, "Estudiar")
+    _crear_habito(app, ana, "Leer")
+    _entrar(cliente, "ana@x.com")
+
+    html = _texto(cliente.get("/?q=est"))
+    assert '<span class="nombre-habito">Estudiar</span>' in html
+    assert ">Leer<" not in html
+
+
+def test_cp10_buscar_ignora_mayusculas_y_espacios(app, cliente):
+    ana = _crear_usuario(app, "Ana", "ana@x.com")
+    _crear_habito(app, ana, "Estudiar")
+    _crear_habito(app, ana, "Leer")
+    _entrar(cliente, "ana@x.com")
+
+    html = _texto(cliente.get("/?q=+EST+"))
+    assert ">Estudiar<" in html
+    assert ">Leer<" not in html
+
+
+def test_cp10_la_busqueda_se_queda_en_el_campo(app, cliente):
+    _crear_usuario(app, "Ana", "ana@x.com")
+    _entrar(cliente, "ana@x.com")
+
+    html = _texto(cliente.get("/?q=est"))
+    assert 'value="est"' in html
+
+
+def test_cp10_busqueda_sin_resultados_avisa(app, cliente):
+    ana = _crear_usuario(app, "Ana", "ana@x.com")
+    _crear_habito(app, ana, "Estudiar")
+    _entrar(cliente, "ana@x.com")
+
+    html = _texto(cliente.get("/?q=correr"))
+    assert "No hay hábitos que coincidan con la búsqueda" in html
+    assert "Crea tu primer hábito" not in html
+
+
+def test_cp10_buscar_no_muestra_habitos_ajenos(app, cliente):
+    ana = _crear_usuario(app, "Ana", "ana@x.com")
+    _crear_habito(app, ana, "Estudiar")
+    _crear_usuario(app, "Beto", "beto@x.com")
+    _entrar(cliente, "beto@x.com")
+
+    html = _texto(cliente.get("/?q=est"))
+    assert "Estudiar" not in html
+    assert "No hay hábitos que coincidan con la búsqueda" in html
+
+
+def test_cp15_boton_exportar_descarga_el_csv(app, cliente):
+    ana = _crear_usuario(app, "Ana", "ana@x.com")
+    _crear_habito(app, ana, "Estudiar")
+    _entrar(cliente, "ana@x.com")
+
+    html = _texto(cliente.get("/"))
+    assert "Exportar CSV" in html
+    assert "/api/habits/export" in html
+
+    respuesta = cliente.get("/api/habits/export")
+    assert respuesta.status_code == 200
+    assert respuesta.mimetype == "text/csv"
+    assert "attachment" in respuesta.headers["Content-Disposition"]
+    assert "Estudiar" in respuesta.get_data(as_text=True)

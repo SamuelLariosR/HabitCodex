@@ -381,3 +381,69 @@ def test_el_login_de_la_api_sirve_para_la_web(app, cliente):
     assert _entrar(cliente).status_code == 200
     html = cliente.get("/").get_data(as_text=True)
     assert "Mis hábitos" in html
+
+
+def test_cp10_api_buscar_filtra(app, cliente):
+    ana = _crear_usuario(app, "Ana", "ana@x.com")
+    estudiar = _crear_habito(app, ana, "Estudiar")
+    _crear_habito(app, ana, "Leer")
+    _entrar(cliente)
+
+    respuesta = cliente.get("/api/habits?q=est")
+    assert respuesta.status_code == 200
+    assert _json(respuesta) == [
+        {"id": estudiar, "nombre": "Estudiar"}
+    ]
+
+
+def test_cp10_api_buscar_ignora_mayusculas_y_espacios(app, cliente):
+    ana = _crear_usuario(app, "Ana", "ana@x.com")
+    estudiar = _crear_habito(app, ana, "Estudiar")
+    _entrar(cliente)
+
+    assert _json(cliente.get("/api/habits?q=+EST+")) == [
+        {"id": estudiar, "nombre": "Estudiar"}
+    ]
+
+
+def test_cp10_api_buscar_sin_resultados(app, cliente):
+    ana = _crear_usuario(app, "Ana", "ana@x.com")
+    _crear_habito(app, ana, "Estudiar")
+    _entrar(cliente)
+
+    respuesta = cliente.get("/api/habits?q=correr")
+    assert respuesta.status_code == 200
+    assert _json(respuesta) == []
+
+
+def test_cp10_api_busqueda_vacia_devuelve_todos(app, cliente):
+    ana = _crear_usuario(app, "Ana", "ana@x.com")
+    estudiar = _crear_habito(app, ana, "Estudiar")
+    leer = _crear_habito(app, ana, "Leer")
+    _entrar(cliente)
+
+    respuesta = cliente.get("/api/habits?q=")
+    assert _json(respuesta) == [
+        {"id": estudiar, "nombre": "Estudiar"},
+        {"id": leer, "nombre": "Leer"},
+    ]
+
+
+def test_cp10_api_buscar_no_mezcla_habitos_ajenos(app, cliente):
+    ana = _crear_usuario(app, "Ana", "ana@x.com")
+    _crear_habito(app, ana, "Estudiar")
+    _crear_usuario(app, "Beto", "beto@x.com")
+    _entrar(cliente, "beto@x.com")
+
+    assert _json(cliente.get("/api/habits?q=est")) == []
+
+
+def test_cp10_api_buscar_toma_los_comodines_como_texto(app, cliente):
+    ana = _crear_usuario(app, "Ana", "ana@x.com")
+    agua = _crear_habito(app, ana, "Beber 100% agua")
+    _crear_habito(app, ana, "Leer")
+    _entrar(cliente)
+
+    assert _json(cliente.get("/api/habits?q=%25")) == [
+        {"id": agua, "nombre": "Beber 100% agua"}
+    ]

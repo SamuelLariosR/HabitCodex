@@ -23,6 +23,23 @@ def listar_habitos(conexion, usuario):
     return [dict(fila) for fila in filas]
 
 
+def buscar_por_texto(conexion, usuario, texto):
+    """Activos cuyo nombre contiene el texto, en el mismo orden."""
+    # % y _ son comodines de LIKE: se escapan para buscarlos de verdad.
+    patron = (
+        texto.replace("\\", "\\\\")
+        .replace("%", "\\%")
+        .replace("_", "\\_")
+    )
+    filas = conexion.execute(
+        "SELECT * FROM habitos WHERE usuario = ? AND activo = 1 "
+        "AND nombre_normalizado LIKE ? ESCAPE '\\' "
+        "ORDER BY fecha_creacion, id",
+        (usuario, f"%{patron}%"),
+    ).fetchall()
+    return [dict(fila) for fila in filas]
+
+
 def buscar_habito(conexion, habito_id, usuario):
     """Devuelve un hábito activo del usuario, o None."""
     fila = conexion.execute(

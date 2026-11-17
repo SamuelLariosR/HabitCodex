@@ -20,6 +20,7 @@ from logica.errores import (
     ErrorNoEncontrado,
 )
 from logica.habitos import (
+    buscar_mis_habitos,
     crear_habito,
     editar_habito,
     eliminar_habito,
@@ -134,8 +135,11 @@ def cerrar_sesion():
 @requiere_sesion_api
 @errores_api
 def listar():
+    busqueda = request.args.get("q", "").strip()
     with conexion_bd(_ruta_bd()) as conexion:
-        habitos = listar_mis_habitos(conexion, session["usuario_id"])
+        habitos = buscar_mis_habitos(
+            conexion, session["usuario_id"], busqueda
+        )
     return jsonify(
         [
             {"id": habito["id"], "nombre": habito["nombre"]}

@@ -21,6 +21,22 @@
   <button type="submit">Agregar hábito</button>
 </form>
 
+<div class="barra-herramientas">
+  <form method="get" action="{{ url_for('paginas.principal') }}"
+        class="barra-buscar" role="search">
+    <label class="oculto" for="q">Buscar hábito</label>
+    <input id="q" name="q" type="search" maxlength="60"
+           value="{{ busqueda }}" placeholder="Buscar hábito">
+    <button type="submit" class="boton boton-secundario">Buscar</button>
+    {% if busqueda %}
+    <a class="boton boton-texto"
+       href="{{ url_for('paginas.principal') }}">Limpiar</a>
+    {% endif %}
+  </form>
+  <a class="boton boton-secundario"
+     href="{{ url_for('api.exportar') }}">Exportar CSV</a>
+</div>
+
 {% if habitos %}
 <ul class="lista-habitos">
   {% for habito in habitos %}
@@ -40,6 +56,8 @@
   </li>
   {% endfor %}
 </ul>
+{% elif busqueda %}
+<p class="vacio">No hay hábitos que coincidan con la búsqueda</p>
 {% else %}
 <p class="vacio">Crea tu primer hábito</p>
 {% endif %}

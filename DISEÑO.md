@@ -36,35 +36,37 @@ Una página web para guardar y organizar tus hábitos (por ejemplo "Estudiar", "
 
 ```
 HabitCodex/
-├── app.py                 # Punto de arranque: enciende la aplicación
-├── requirements.txt       # Lista de lo que hay que instalar para ejecutarla
-├── requirements-dev.txt   # Herramientas extra: pruebas y calidad del código
+├── app.py                 # Arranca la aplicación
+├── requirements.txt       # Paquetes necesarios para ejecutarla
+├── requirements-dev.txt   # Paquetes para pruebas y estilo
 ├── .env.example           # Plantilla de la configuración (sin claves reales)
-├── .gitignore             # Lo que NO se sube a GitHub (.env, venv, base de datos)
-├── .flake8                # Reglas de estilo para flake8
-├── pytest.ini             # Configuración de pytest: carpeta de pruebas e imports
-├── README.md              # Cómo instalar y ejecutar
+├── .env                   # Tu configuración local; no se sube a GitHub
+├── .gitignore             # Lo que NO se sube a GitHub
+├── .flake8                # Reglas de estilo (flake8)
+├── pytest.ini             # Configuración de las pruebas
+├── README.md              # Cómo instalar y usar la aplicación
 ├── DISEÑO.md              # Este documento
+├── venv/                  # Entorno virtual con las dependencias; no se sube
 │
-├── datos/                 # CAPA DE DATOS (la bodega)
+├── datos/                 # Acceso a la base de datos
 │   ├── __init__.py        #   Marca la carpeta como paquete de Python
 │   ├── conexion.py        #   Abre SQLite y crea las tablas
 │   ├── usuarios_datos.py  #   Guarda y busca usuarios
 │   ├── tokens_datos.py    #   Guarda y busca los tokens de verificación
-│   └── habitos_datos.py   #   Guarda y busca hábitos
+│   └── habitos_datos.py   #   Guarda, busca y filtra hábitos
 │
-├── logica/                # CAPA DE LÓGICA (la cocina)
+├── logica/                # Reglas de la aplicación
 │   ├── __init__.py        #   Marca la carpeta como paquete de Python
 │   ├── usuarios.py        #   Reglas de registro e inicio de sesión
 │   ├── habitos.py         #   Reglas de crear, editar, eliminar, buscar, exportar
-│   ├── errores.py         #   Los errores propios y sus mensajes
-│   └── bd.py              #   Abre la base y entrega conexiones a la web
+│   ├── errores.py         #   Errores de la aplicación y sus mensajes
+│   └── bd.py              #   Prepara la base y entrega conexiones
 │
-├── web/                   # CAPA WEB (el mesero)
+├── web/                   # Páginas y API
 │   ├── __init__.py        #   Crea la aplicación Flask y conecta las rutas
-│   ├── paginas.py         #   Rutas de las páginas que ve la persona
+│   ├── paginas.py         #   Rutas de las páginas HTML
 │   ├── api.py             #   Rutas de la API (empiezan con /api)
-│   ├── templates/         #   Las páginas HTML
+│   ├── templates/         #   Páginas HTML
 │   │   ├── base.html      #     Estructura común (encabezado, mensajes)
 │   │   ├── registro.html
 │   │   ├── login.html
@@ -73,24 +75,35 @@ HabitCodex/
 │   └── static/
 │       └── estilos.css    #   Colores y diseño
 │
-├── pruebas/               # Pruebas
-│   ├── conftest.py        #   Base temporal y datos de ejemplo para cada prueba
+├── pruebas/               # Pruebas automáticas y de rendimiento
+│   ├── conftest.py        #   Base temporal y usuarios de ejemplo
 │   ├── test_usuarios.py   #   Prueba las reglas de usuarios
-│   ├── test_errores.py    #   Prueba que cada error trae su mensaje
-│   ├── test_habitos.py    #   Prueba las reglas de hábitos
-│   ├── test_paginas.py    #   Prueba las páginas, la sesión y CP-05/CP-11
-│   ├── test_api.py        #   Prueba los endpoints JSON y CP-17
-│   ├── locustfile.py      #   Prueba de rendimiento (simula muchos usuarios)
+│   ├── test_errores.py    #   Prueba el mensaje de cada error
+│   ├── test_habitos.py    #   Prueba las reglas de hábitos y la búsqueda
+│   ├── test_paginas.py    #   Prueba las páginas, la sesión y CP-05, CP-10, CP-11 y CP-15
+│   ├── test_api.py        #   Prueba los endpoints JSON, CP-10 y CP-17
+│   ├── locustfile.py      #   Simula muchos usuarios para medir la rapidez
 │   ├── monitor_recursos.py        # Apunta CPU y memoria durante la prueba
 │   └── chequeo_disponibilidad.py  # Comprueba cada minuto que la app responde
 │
-├── resultados/            # CSV de las pruebas de rendimiento y disponibilidad
-│
-└── docs/
-    └── HabitCodex_Integrador.xlsx   # El libro de Excel de la entrega
+├── resultados/            # CSV de las pruebas (se llena en la Fase 8)
+├── docs/                  # Documentos de la entrega (Excel, Fase 8)
+└── habitcodex.db          # Base de datos; se crea sola y no se sube
 ```
 
-El archivo de la base de datos (`habitcodex.db`) se crea solo al ejecutar la aplicación y no se sube a GitHub.
+**Cómo se reparte el trabajo.** Cada petición recorre siempre las mismas tres carpetas, en este orden:
+
+```text
+web/  →  logica/  →  datos/
+```
+
+- `web/` recibe la petición y responde: una página HTML o un JSON.
+- `logica/` decide si lo que llega es válido y qué hacer con ello.
+- `datos/` lee y guarda en SQLite.
+
+Cada carpeta solo puede usar la siguiente: `web` usa `logica`, y `logica` usa `datos`. Nunca al revés. `logica/` no importa Flask ni sabe si la respuesta será una página o un JSON; por eso sus reglas se prueban solas, sin abrir el navegador.
+
+No se suben a GitHub: `venv/`, `.env`, `habitcodex.db`, `__pycache__/`, `.pytest_cache/` y `.vscode/`. El entorno y la base se crean al instalar y arrancar; lo demás es caché y configuración de tu editor. Para empezar, copia `.env.example` como `.env` y escribe ahí tu `SECRET_KEY` y la ruta de la base.
 
 **Dependencias:** `requirements.txt` solo lleva lo necesario para ejecutar (Flask, python-dotenv, y gunicorn en Linux o waitress en Windows). `requirements-dev.txt` lleva pytest, flake8, locust y psutil.
 

@@ -376,3 +376,18 @@ def test_cp15_boton_exportar_descarga_el_csv(app, cliente):
     assert respuesta.mimetype == "text/csv"
     assert "attachment" in respuesta.headers["Content-Disposition"]
     assert "Estudiar" in respuesta.get_data(as_text=True)
+
+
+def test_cp16_los_habitos_siguen_al_reiniciar(app, cliente):
+    ana = _crear_usuario(app, "Ana", "ana@x.com")
+    _crear_habito(app, ana, "Estudiar")
+    _entrar(cliente, "ana@x.com")
+
+    # Otra instancia con la misma base: simula cerrar y abrir la app.
+    otra = create_app()
+    otra.config["TESTING"] = True
+    otro_cliente = otra.test_client()
+    _entrar(otro_cliente, "ana@x.com")
+
+    html = _texto(otro_cliente.get("/"))
+    assert "Estudiar" in html

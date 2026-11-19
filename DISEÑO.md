@@ -27,9 +27,9 @@ Una página web para guardar y organizar tus hábitos (por ejemplo "Estudiar", "
 
 ## 3. ¿Qué hace la versión 0.1?
 
-**Sí:** crear cuenta, entrar y salir, crear hábitos, verlos, buscarlos, editarlos, eliminarlos y descargarlos en un archivo CSV. También ofrece una API.
-
-**No:** todo lo demás queda para el futuro (ver el título **FUTURO** al final).
+- **Usuario**: crear cuenta , entrar y salir, 
+- **Habitos**: crear hábitos, verlos, buscarlos, editarlos eliminarlos y descargarlos en un archivo CSV.  
+- También ofrece una API.
 
 
 ## 4. Estructura del proyecto 
@@ -86,8 +86,8 @@ HabitCodex/
 │   ├── monitor_recursos.py        # Apunta CPU y memoria durante la prueba
 │   └── chequeo_disponibilidad.py  # Comprueba cada minuto que la app responde
 │
-├── resultados/            # CSV de las pruebas (se llena en la Fase 8)
-├── docs/                  # Documentos de la entrega (Excel, Fase 8)
+├── resultados/            # CSV de las pruebas 
+├── docs/                  # Documentos de la entrega 
 └── habitcodex.db          # Base de datos; se crea sola y no se sube
 ```
 
@@ -183,7 +183,7 @@ pasa a `verificado = 1` y el token se marca como usado.
 3. El correo se guarda en minúsculas, no se puede repetir y debe tener forma
    `texto@dominio.ext`: una sola arroba y un punto en el dominio.
 4. La contraseña nunca se guarda tal cual: se guarda su **hash**
-   (`pbkdf2_sha256`, con una sal aleatoria de 16 bytes y 600 000 iteraciones,
+   (`pbkdf2_sha256`, con una salida aleatoria de 16 bytes y 600 000 iteraciones,
    todo con la librería estándar de Python).
 5. Al iniciar sesión se recalcula el hash y se compara con el guardado; el
    texto de la contraseña no se compara nunca.

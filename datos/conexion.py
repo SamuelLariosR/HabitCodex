@@ -2,6 +2,37 @@
 
 import os
 import sqlite3
+import time
+
+INTENTOS = 6
+
+
+def _activar_wal(conexion):
+    """Activa WAL esperando si otro proceso tiene la base ocupada.
+
+    Al arrancar Gunicorn, varios workers abren la base a la vez y el
+    PRAGMA falla con 'database is locked'. Reintentar lo resuelve.
+    """
+    for intento in range(INTENTOS):
+        try:
+            conexion.execute("PRAGMA journal_mode = WAL;")
+            return
+        except sqlite3.OperationalError:
+            if intento == INTENTOS - 1:
+                raise
+            time.sleep(0.1 * (intento + 1))
+
+
+def _empezar_transaccion(cursor):
+    """BEGIN IMMEDIATE toma el turno de escritura desde el principio."""
+    for intento in range(INTENTOS):
+        try:
+            cursor.execute("BEGIN IMMEDIATE")
+            return
+        except sqlite3.OperationalError:
+            if intento == INTENTOS - 1:
+                raise
+            time.sleep(0.1 * (intento + 1))
 
 
 def obtener_conexion(ruta=None):
@@ -17,7 +48,8 @@ def obtener_conexion(ruta=None):
     if carpeta:
         os.makedirs(carpeta, exist_ok=True)
 
-    conexion = sqlite3.connect(ruta)
+    # timeout: si otro worker está escribiendo, espera en vez de fallar.
+    conexion = sqlite3.connect(ruta, timeout=15)
 
     # Filas accesibles por nombre de columna.
     conexion.row_factory = sqlite3.Row
@@ -25,8 +57,10 @@ def obtener_conexion(ruta=None):
     # SQLite trae las claves foráneas desactivadas.
     conexion.execute("PRAGMA foreign_keys = ON;")
 
-    # WAL: permite leer mientras se escribe.
-    conexion.execute("PRAGMA journal_mode = WAL;")
+    # WAL: permite leer mientras se escribe. Solo se cambia si hace falta.
+    modo = conexion.execute("PRAGMA journal_mode;").fetchone()[0]
+    if modo.lower() != "wal":
+        _activar_wal(conexion)
 
     return conexion
 
@@ -37,8 +71,8 @@ def inicializar_bd(ruta=None):
     cursor = conexion.cursor()
 
     # Un solo BEGIN: sin el, cada CREATE se confirma aparte y el disco
-    # se sincroniza tres veces.
-    cursor.execute("BEGIN")
+    # se sincroniza tres veces. IMMEDIATE evita choques entre workers.
+    _empezar_transaccion(cursor)
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (

@@ -154,13 +154,6 @@ Recursos de Gunicorn, sumando los 4 workers (400 % sería el 100 % de los 4 núc
 |Carga media|48.4 %|234.4 %|169 MB|
 |Carga alta|84.1 %|386.1 %|169 MB|
 
-Disponibilidad: 10 comprobaciones, una por minuto, todas con código 200 (0 fallos) y entre 5.2 y 30.9 ms de respuesta.
-
-**Contraste con el RNF-01:** con 50 usuarios a la vez, 95 de cada 100 solicitudes respondieron en 1400 ms o menos, por debajo de los 2000 ms que pide el requisito. **Se cumple**, y ningún escenario tuvo un solo fallo.
-
-El punto débil son el registro y el inicio de sesión: con 50 usuarios tardan 3900 ms y 3300 ms en el percentil 95. La causa es el hash de la contraseña (600 000 iteraciones), que se calcula una sola vez por usuario y de golpe al empezar la prueba. La lista, la búsqueda, la creación y la edición se mantienen muy por debajo de 2 s. Con 100 usuarios el uso de CPU llega al 386 % de 400 %, así que el límite es el procesador, no SQLite: no apareció ningún `database is locked` con WAL activo.
-
-Mejoras posibles, sin cambiar el diseño: más workers o `--worker-class gthread`, repartir el registro en una cola para no bloquear la petición, y servir los archivos estáticos con Nginx. Bajar las iteraciones del hash no se recomienda porque debilita las contraseñas.
 
 ## Si algo falla
 

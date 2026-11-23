@@ -166,7 +166,7 @@ Recursos de Gunicorn, sumando los 4 workers (400 % sería el 100 % de los 4 núc
 |Locust avisa `open file limit ... below 10000`|Sube el límite en esa terminal con `ulimit -n 10000` antes de lanzar la prueba.|
 |Gunicorn no funciona en Windows|Es normal; en Windows usa `waitress-serve`.|
 
-## Despliegue en la nube (opcional)
+## Despliegue en la nube (es opcional)
 
 Se puede publicar en Render, Railway o PythonAnywhere. Cuando se haga, aquí se anotará la dirección pública, el comando de inicio y las variables de entorno configuradas.
 
